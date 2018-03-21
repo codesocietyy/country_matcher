@@ -13,16 +13,15 @@ ini_set("display_errors", 1);
 
 if ($stmt = $mysqli->prepare("SELECT `Country` FROM `eudata`  WHERE (Housing = ? && Income = ? && Jobs = ? && Education = ? && Safety = ? && WorkLifeBalance = ?)")){
     $stmt->bind_param( "iiiiii", $fhousing, $fincome, $fjobs, $feducation, $fsafety, $fworklifebalance); 
-
     $stmt->execute();
-    $stmt->store_result();
-     $stmt->bind_result($Country);
-     $stmt->fetch();
+//grab a result set
+$resultSet = $stmt->get_result();
 
-     echo $Country;
+//pull all results as an associative array
+$result = $resultSet->fetch_all();
+print_r($result);
     $stmt->close();
 
-    $mysqli->close();
 }else
 {
 $error = $mysqli->errno . ' ' . $mysqli->error;
